@@ -14,8 +14,10 @@ app.use(cors());
 app.use(express.json());
 
 const userRouter = require("./routes/userRoute");
+const roleRouter = require("./routes/roleRoute");
 
-app.use("/api/users", userRouter);
+app.use("/api", userRouter);
+app.use("/api", roleRouter);
 
 const globalErrorMiddleware = require("./middlewares/errors/globalErrorMiddleware");
 
