@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
       if (msg.includes("Executing (default): SELECT 1+1 AS result")) {
         infoLog("Database connection established successfully.");
       } else {
-        console.log(msg);
+        // console.log(msg);
       }
     },
   }

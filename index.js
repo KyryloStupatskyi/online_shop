@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const { testDatabaseConnection } = require("./dbConnection");
 const { infoLog, errorLog } = require("./utils/extra/logs");
+require("./models/models");
 
 const PORT = process.env.PORT || 3002;
 
@@ -14,7 +15,7 @@ app.use(express.json());
 
 const userRouter = require("./routes/userRoute");
 
-app.use("api/users", userRouter);
+app.use("/api/users", userRouter);
 
 const globalErrorMiddleware = require("./middlewares/errors/globalErrorMiddleware");
 
