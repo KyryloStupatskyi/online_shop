@@ -16,6 +16,10 @@ const userRouter = require("./routes/userRoute");
 
 app.use("api/users", userRouter);
 
+const globalErrorMiddleware = require("./middlewares/errors/globalErrorMiddleware");
+
+app.use(globalErrorMiddleware);
+
 const startServer = async () => {
   await testDatabaseConnection();
 

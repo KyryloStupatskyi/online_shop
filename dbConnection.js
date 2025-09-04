@@ -26,7 +26,7 @@ const testDatabaseConnection = async () => {
       break;
     } catch (err) {
       errorLog(
-        `Failed to connect to database. Retrying database connection in 5s... \nError log: ${err.message}. `
+        `Failed to connect to database. Retrying database connection in 5s... \n\tError log: ${err.message}. `
       );
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
