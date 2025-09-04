@@ -31,6 +31,20 @@ class RoleService {
       throw error;
     }
   }
+
+  async getAllRoles() {
+    try {
+      const roles = await Role.findAll();
+
+      if (!roles || roles.length === 0) {
+        throw new ErrorHandler("No roles found", 404);
+      }
+
+      return roles;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new RoleService();
