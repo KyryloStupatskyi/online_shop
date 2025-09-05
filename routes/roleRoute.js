@@ -6,10 +6,14 @@ const {
   getAllRoles,
   getRoleByValue,
 } = require("../controllers/roleController");
+const {
+  createRoleValidator,
+  getRoleValidator,
+} = require("../middlewares/validators/roleValidatorMiddleware");
 
-router.post("/roles/new", createRole);
+router.post("/roles/new", createRoleValidator, createRole);
 router.get("/roles/all", getAllRoles);
 
-router.get("/role/:value", getRoleByValue);
+router.get("/role/:value", getRoleValidator, getRoleByValue);
 
 module.exports = router;
