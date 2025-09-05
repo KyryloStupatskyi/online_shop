@@ -14,12 +14,21 @@ const Role = sequelize.define("roles", {
   value: { type: DataTypes.STRING, allowNull: false, unique: true },
 });
 
+const RefreshToken = sequelize.define("refresh_tokens", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  token: { type: DataTypes.STRING, allowNull: false },
+});
+
 const UserRoles = sequelize.define("user_roles");
 
 Role.belongsToMany(User, { through: UserRoles });
 User.belongsToMany(Role, { through: UserRoles });
 
+RefreshToken.belongsTo(User);
+User.hasOne(RefreshToken);
+
 module.exports = {
   User,
   Role,
+  RefreshToken,
 };
