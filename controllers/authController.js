@@ -1,11 +1,14 @@
 const asyncErrorHandler = require("../middlewares/errors/asyncErrorHandler");
 const userService = require("../services/userService");
 const tokenService = require("../services/tokenService");
+const bcryptService = require("../services/bcryptService");
 
 module.exports.registration = asyncErrorHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = await userService.createUser(email, password);
+  const hashedPassword = await bcryptService.hashPassword(password);
+
+  const user = await userService.createUser(email, hashedPassword);
   const { accessToken, refreshToken } = tokenService.generateTokens({
     id: user.id,
     email: user.email,
