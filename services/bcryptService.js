@@ -1,16 +1,21 @@
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 class BcryptService {
-  async generateSalt(rounds = 6) {
-    return await bcrypt.genSalt(rounds);
+  generateSalt(saltLength) {
+    return crypto.randomBytes(saltLength).toString("hex");
   }
 
   async hashPassword(password, salt) {
-    return await bcrypt.hash(password, salt);
+    const pepper = process.env.PASSWORD_PEPPER;
+    const passwordToHash = password + pepper + salt;
+    return await bcrypt.hash(passwordToHash, 6);
   }
 
-  async comparePassword(password, hashPassword) {
-    return await bcrypt.compare(password, hashPassword);
+  async comparePassword(password, hashPassword, salt) {
+    const pepper = process.env.PASSWORD_PEPPER;
+    const combined = password + pepper + salt;
+    return await bcrypt.compare(combined, hashPassword);
   }
 }
 
