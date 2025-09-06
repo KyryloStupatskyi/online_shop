@@ -2,9 +2,7 @@ const { body } = require("express-validator");
 const { helperErrorLogMiddleware } = require("./helperErrorLogMiddleware");
 
 module.exports.authValidator = [
-  body("email")
-    .isEmail()
-    .withMessage("Invalida email format, please try again!"),
+  body("email").isEmail().withMessage("Invalida email format, please try again!"),
 
   body("password")
     .notEmpty()
