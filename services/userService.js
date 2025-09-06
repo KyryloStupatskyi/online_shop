@@ -11,8 +11,36 @@ class UserService {
         throw new ErrorHandler("User with this email already exist", 400);
       }
 
-      const salt = await bcryptService.generateSalt(6);
+      const salt = bcryptService.generateSalt(6);
       const user = await User.create({ email, password: hashedPassword, salt });
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUserByEmail(email) {
+    try {
+      const user = await User.findOne({ where: { email } });
+
+      if (!user) {
+        throw new ErrorHandler("User with this email does not exist", 404);
+      }
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUserById(userId) {
+    try {
+      const user = await User.findByPk(userId);
+
+      if (!user) {
+        throw new ErrorHandler("User with this userId does not exist", 404);
+      }
 
       return user;
     } catch (error) {
