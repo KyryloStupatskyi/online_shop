@@ -13,10 +13,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const userRouter = require("./routes/userRoute");
+const authRoute = require("./routes/authRoute");
 const roleRouter = require("./routes/roleRoute");
 
-app.use("/api", userRouter);
+app.use("/api", authRoute);
 app.use("/api", roleRouter);
 
 const globalErrorMiddleware = require("./middlewares/errors/globalErrorMiddleware");

@@ -1,6 +1,7 @@
 const { User } = require("../models/models");
 const ErrorHandler = require("../utils/extra/errorHandler");
 const bcryptService = require("./bcryptService");
+const roleService = require("./roleService");
 
 class UserService {
   async createUser(email, hashedPassword) {
@@ -12,7 +13,11 @@ class UserService {
       }
 
       const salt = bcryptService.generateSalt(6);
+
+      const role = await roleService.getRoleByValue("USER");
       const user = await User.create({ email, password: hashedPassword, salt });
+
+      await user.setRoles(role);
 
       return user;
     } catch (error) {

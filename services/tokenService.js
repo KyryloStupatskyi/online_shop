@@ -1,6 +1,7 @@
 const jsonwebtoken = require("jsonwebtoken");
 const { RefreshToken } = require("../models/models");
 const { infoLog } = require("../utils/extra/logs");
+const userService = require("./userService");
 
 class TokenService {
   generateTokens(tokenPayload) {
@@ -58,15 +59,12 @@ class TokenService {
         where: { userId: user.id },
       });
 
-      if (isTokenExist) {
+      if (tokenInDb) {
         tokenInDb.token = token;
         return tokenInDb.save();
       }
 
-      // Heej, check is it working correctly
-      const newToken = await user.setRefreshToken(token);
-
-      infoLog("Created refresh token: " + newToken);
+      const newToken = await user.createRefresh_token({ token });
 
       return newToken;
     } catch (error) {
