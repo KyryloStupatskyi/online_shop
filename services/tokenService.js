@@ -54,13 +54,16 @@ class TokenService {
 
   async saveRefreshTokenToDb(user, token) {
     try {
-      const tokenInDb = await RefreshToken.findOne({ where: { userId } });
+      const tokenInDb = await RefreshToken.findOne({
+        where: { userId: user.id },
+      });
 
       if (isTokenExist) {
         tokenInDb.token = token;
         return tokenInDb.save();
       }
 
+      // Heej, check is it working correctly
       const newToken = await user.setRefreshToken(token);
 
       infoLog("Created refresh token: " + newToken);
