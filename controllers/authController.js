@@ -2,7 +2,6 @@ const asyncErrorHandler = require("../middlewares/errors/asyncErrorHandler");
 const userService = require("../services/userService");
 const tokenService = require("../services/tokenService");
 const bcryptService = require("../services/bcryptService");
-const { infoLog } = require("../utils/extra/logs");
 const ErrorHandler = require("../utils/extra/errorHandler");
 
 module.exports.registration = asyncErrorHandler(async (req, res, next) => {
