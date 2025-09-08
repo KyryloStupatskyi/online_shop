@@ -18,3 +18,5 @@ const validateRefreshTokenMiddleware = (req, res, next) => {
     next(new ErrorHandler("Invalid refresh token, please log in.", 401));
   }
 };
+
+module.exports = validateRefreshTokenMiddleware;
