@@ -17,9 +17,11 @@ app.use(cookieParser());
 
 const authRoute = require("./routes/authRoute");
 const roleRouter = require("./routes/roleRoute");
+const userRoute = require("./routes/userRoute");
 
 app.use("/api", authRoute);
 app.use("/api", roleRouter);
+app.use("/api", userRoute);
 
 const globalErrorMiddleware = require("./middlewares/errors/globalErrorMiddleware");
 

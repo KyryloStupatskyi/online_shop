@@ -1,0 +1,12 @@
+const express = require("express");
+const multer = require("multer");
+
+const router = express.Router();
+const upload = multer();
+
+const { uploadUserAvatar } = require("../controllers/userController");
+const { uploadFileValidator } = require("../middlewares/validators/uploadFileValidator");
+
+router.patch("/user/settings/add-avatar", upload.single("avatar"), uploadFileValidator, uploadUserAvatar);
+
+module.exports = router;
