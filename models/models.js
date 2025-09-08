@@ -7,6 +7,7 @@ const User = sequelize.define("users", {
   password: { type: DataTypes.STRING, allowNull: false },
   salt: { type: DataTypes.STRING, allowNull: false, unique: true },
   avatarUrl: { type: DataTypes.STRING, allowNull: true },
+  avatarId: { type: DataTypes.STRING, allowNull: true },
 });
 
 const Role = sequelize.define("roles", {
