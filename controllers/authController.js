@@ -17,11 +17,17 @@ module.exports.registration = asyncErrorHandler(async (req, res, next) => {
 
   await tokenService.saveRefreshTokenToDb(user, refreshToken);
 
-  return res.status(201).json({
-    message: "User successfully registered",
-    accessToken,
-    refreshToken,
-  });
+  return res
+    .cookie("refreshToken", refreshToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+      secure: false,
+    })
+    .status(201)
+    .json({
+      message: "User successfully registered",
+      accessToken,
+    });
 });
 
 module.exports.login = asyncErrorHandler(async (req, res, next) => {
@@ -42,9 +48,15 @@ module.exports.login = asyncErrorHandler(async (req, res, next) => {
 
   await tokenService.saveRefreshTokenToDb(user, refreshToken);
 
-  return res.status(201).json({
-    message: "User successfully logged in",
-    accessToken,
-    refreshToken,
-  });
+  return res
+    .cookie("refreshToken", refreshToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+      secure: false,
+    })
+    .status(201)
+    .json({
+      message: "User successfully logged in",
+      accessToken,
+    });
 });
