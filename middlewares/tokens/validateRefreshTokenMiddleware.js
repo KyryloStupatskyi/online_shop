@@ -1,7 +1,7 @@
 const tokenService = require("../../services/tokenService");
 const ErrorHandler = require("../../utils/extra/errorHandler");
 
-const validateRefreshTokenMiddleware = (req, res, next) => {
+module.exports.validateRefreshTokenMiddleware = (req, res, next) => {
   try {
     const { refreshToken } = req.cookies;
 
@@ -18,5 +18,3 @@ const validateRefreshTokenMiddleware = (req, res, next) => {
     next(new ErrorHandler("Invalid refresh token, please log in.", 401));
   }
 };
-
-module.exports = validateRefreshTokenMiddleware;

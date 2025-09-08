@@ -1,9 +1,9 @@
 const tokenService = require("../../services/tokenService");
 const ErrorHandler = require("../../utils/extra/errorHandler");
 
-const validateAccessTokenMiddleware = (req, res, next) => {
+module.exports.validateAccessTokenMiddleware = (req, res, next) => {
   try {
-    const { accessToken } = req.headers.authorization;
+    const accessToken = req.headers.authorization.split(" ")[1];
 
     if (!accessToken) {
       next(new ErrorHandler("Access token is missing.", 400));
@@ -18,5 +18,3 @@ const validateAccessTokenMiddleware = (req, res, next) => {
     next(new ErrorHandler("Invalid access token, please log in.", 401));
   }
 };
-
-module.exports = validateAccessTokenMiddleware;
