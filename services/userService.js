@@ -19,7 +19,7 @@ class UserService {
 
       await user.setRoles(role);
 
-      return user;
+      return { user, role };
     } catch (error) {
       throw error;
     }
@@ -27,7 +27,7 @@ class UserService {
 
   async getUserByEmail(email) {
     try {
-      const user = await User.findOne({ where: { email } });
+      const user = await User.findOne({ where: { email }, include: ["roles"] });
 
       if (!user) {
         throw new ErrorHandler("User with this email does not exist", 404);
@@ -41,7 +41,7 @@ class UserService {
 
   async getUserById(userId) {
     try {
-      const user = await User.findByPk(userId);
+      const user = await User.findByPk(userId, { include: ["roles"] });
 
       if (!user) {
         throw new ErrorHandler("User with this userId does not exist", 404);

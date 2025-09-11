@@ -9,8 +9,12 @@ module.exports.registration = asyncErrorHandler(async (req, res, next) => {
 
   const hashedPassword = await bcryptService.hashPassword(password);
 
-  const user = await userService.createUser(email, hashedPassword);
-  const { accessToken, refreshToken } = tokenService.generateTokens({ id: user.id, email: user.email });
+  const { user, role } = await userService.createUser(email, hashedPassword);
+  const { accessToken, refreshToken } = tokenService.generateTokens({
+    id: user.id,
+    email: user.email,
+    role: role.value,
+  });
 
   await tokenService.saveRefreshTokenToDb(user, refreshToken);
 
@@ -38,9 +42,12 @@ module.exports.login = asyncErrorHandler(async (req, res, next) => {
     throw new ErrorHandler("Incorrect password", 400);
   }
 
+  const roles = user.roles.map((item) => item.value);
+
   const { accessToken, refreshToken } = tokenService.generateTokens({
     id: user.id,
     email: user.email,
+    roles,
   });
 
   await tokenService.saveRefreshTokenToDb(user, refreshToken);
@@ -61,7 +68,11 @@ module.exports.login = asyncErrorHandler(async (req, res, next) => {
 module.exports.refresh = asyncErrorHandler(async (req, res, next) => {
   const user = req.user;
 
-  const { accessToken, refreshToken } = tokenService.generateTokens({ id: user.id, email: user.email });
+  const { accessToken, refreshToken } = tokenService.generateTokens({
+    id: user.id,
+    email: user.email,
+    roles: user.roles,
+  });
 
   await tokenService.saveRefreshTokenToDb(user, refreshToken);
 
