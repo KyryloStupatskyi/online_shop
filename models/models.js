@@ -17,7 +17,7 @@ const Role = sequelize.define("roles", {
 
 const RefreshToken = sequelize.define("refresh_tokens", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  token: { type: DataTypes.STRING, allowNull: false },
+  token: { type: DataTypes.TEXT, allowNull: false },
 });
 
 const UserRoles = sequelize.define("user_roles");

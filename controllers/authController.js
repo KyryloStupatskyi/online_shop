@@ -48,6 +48,8 @@ module.exports.login = asyncErrorHandler(async (req, res, next) => {
     id: user.id,
     email: user.email,
     roles,
+    avatarUrl: user.avatarUrl ? user.avatarUrl : null,
+    avatarId: user.avatarId ? user.avatarId : null,
   });
 
   await tokenService.saveRefreshTokenToDb(user, refreshToken);
