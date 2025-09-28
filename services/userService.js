@@ -4,7 +4,7 @@ const bcryptService = require("./bcryptService");
 const roleService = require("./roleService");
 
 class UserService {
-  async createUser(email, hashedPassword) {
+  async createUser(email, password) {
     try {
       const candidate = await User.findOne({ where: { email } });
 
@@ -13,6 +13,7 @@ class UserService {
       }
 
       const salt = bcryptService.generateSalt(6);
+      const hashedPassword = await bcryptService.hashPassword(password, salt);
 
       const role = await roleService.getRoleByValue("USER");
       const user = await User.create({ email, password: hashedPassword, salt });
@@ -48,6 +49,27 @@ class UserService {
       }
 
       return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUserPassword(oldPassword, newPassword, user) {
+    try {
+      const dbUser = await this.getUserById(user.id);
+      const validatePassword = await bcryptService.comparePassword(oldPassword, dbUser.password, dbUser.salt);
+
+      if (!validatePassword) {
+        throw new ErrorHandler("Current password is incorrect, please try again!", 400);
+      }
+
+      const newSalt = bcryptService.generateSalt(6);
+      const newHashedPassword = await bcryptService.hashPassword(newPassword, newSalt);
+
+      dbUser.password = newHashedPassword;
+      dbUser.salt = newSalt;
+
+      await dbUser.save();
     } catch (error) {
       throw error;
     }

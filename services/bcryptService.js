@@ -13,6 +13,7 @@ class BcryptService {
   }
 
   async comparePassword(password, hashPassword, salt) {
+    console.log(password, hashPassword, salt);
     const pepper = process.env.PASSWORD_PEPPER;
     const combined = password + pepper + salt;
     return await bcrypt.compare(combined, hashPassword);

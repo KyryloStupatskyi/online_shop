@@ -24,3 +24,18 @@ module.exports.uploadUserAvatar = asyncErrorHandler(async (req, res, next) => {
     avatarUrl: secure_url,
   });
 });
+
+// Update this method with microservice notification later!
+
+module.exports.updateUserPassword = asyncErrorHandler(async (req, res, next) => {
+  const { currentPassword, newPassword } = req.body;
+  const { user } = req;
+
+  console.log(currentPassword, newPassword);
+
+  await userService.updateUserPassword(currentPassword, newPassword, user);
+
+  res.status(200).json({
+    message: "Password successfully updated!",
+  });
+});

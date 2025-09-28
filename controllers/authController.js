@@ -7,9 +7,7 @@ const ErrorHandler = require("../utils/extra/errorHandler");
 module.exports.registration = asyncErrorHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
-  const hashedPassword = await bcryptService.hashPassword(password);
-
-  const { user, role } = await userService.createUser(email, hashedPassword);
+  const { user, role } = await userService.createUser(email, password);
   const { accessToken, refreshToken } = tokenService.generateTokens({
     id: user.id,
     email: user.email,
@@ -36,7 +34,7 @@ module.exports.login = asyncErrorHandler(async (req, res, next) => {
 
   const user = await userService.getUserByEmail(email);
 
-  const checkIsPasswordCorrect = await bcryptService.comparePassword(password, user.password);
+  const checkIsPasswordCorrect = await bcryptService.comparePassword(password, user.password, user.salt);
 
   if (!checkIsPasswordCorrect) {
     throw new ErrorHandler("Incorrect password", 400);
